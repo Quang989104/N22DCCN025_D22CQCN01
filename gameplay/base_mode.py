@@ -10,30 +10,26 @@ class BaseGameMode:
         self.board_size = 20
         self.cell_size = 30
         self.board = [["" for _ in range(self.board_size)] for _ in range(self.board_size)]
-        self.current_player = 'X'  # Player always starts
+        self.current_player = 'X'  
         self.game_over = False
         self.mode_name = mode_name
         
-        # Configure window size
         window_width = self.board_size * self.cell_size
-        window_height = self.board_size * self.cell_size + 100  # Extra space for controls
+        window_height = self.board_size * self.cell_size + 100  
         self.root.geometry(f"{window_width}x{window_height}")
         
         self.create_widgets()
         draw_board(self.canvas, self.board_size, self.cell_size)
         
-        # Create game_data.jsonl if it doesn't exist
         self.game_data_file = "game_data.jsonl"
         if not os.path.exists(self.game_data_file):
             with open(self.game_data_file, "w", encoding="utf-8") as f:
                 pass
     
     def create_widgets(self):
-        # Create frame for the board
         board_frame = tk.Frame(self.root)
         board_frame.pack(pady=10)
         
-        # Create canvas for the board
         self.canvas = tk.Canvas(
             board_frame, 
             width=self.board_size * self.cell_size,
@@ -43,11 +39,9 @@ class BaseGameMode:
         self.canvas.pack()
         self.canvas.bind("<Button-1>", self.on_click)
         
-        # Create frame for controls
         control_frame = tk.Frame(self.root)
         control_frame.pack(pady=5)
         
-        # Player info label
         self.player_info = tk.Label(
             control_frame, 
             text=f"Lượt của: {self.current_player} ({self.mode_name})",
@@ -55,11 +49,9 @@ class BaseGameMode:
         )
         self.player_info.pack(side=tk.LEFT, padx=10)
         
-        # Buttons frame
         button_frame = tk.Frame(self.root)
         button_frame.pack(pady=5)
         
-        # Reset and back buttons
         tk.Button(
             button_frame, 
             text="Chơi lại", 
@@ -78,35 +70,28 @@ class BaseGameMode:
         if self.game_over:
             return
             
-        # Calculate row and column from mouse click
         col = event.x // self.cell_size
         row = event.y // self.cell_size
         
-        # Check if the cell is valid and empty
         if (0 <= row < self.board_size and 
             0 <= col < self.board_size and 
             self.board[row][col] == ""):
             
-            # Place player's move
             self.place_move(row, col, self.current_player)
             
-            # Check if player won
             if self.check_win(row, col):
                 self.player_info.config(text=f"🎉 Người chơi đã chiến thắng!")
                 self.game_over = True
                 return
                 
-            # Check for draw
             if self.is_board_full():
                 self.player_info.config(text="Hòa!")
                 self.game_over = True
                 return
                 
-            # Update status and wait for AI move
             self.player_info.config(text="AI đang suy nghĩ...")
-            self.root.update()  # Force UI update
-            
-            # Schedule AI move after a slight delay
+            self.root.update() 
+           
             self.root.after(500, self.ai_move)
     
     def ai_move(self):
@@ -119,7 +104,6 @@ class BaseGameMode:
         draw_piece(self.canvas, row, col, player, self.cell_size)
         self.log_move(row, col, player)
         
-        # Switch current player if needed
         if player == 'X':
             self.current_player = 'O'
         else:
@@ -135,26 +119,19 @@ class BaseGameMode:
         self.player_info.config(text=f"Lượt của: {self.current_player} ({self.mode_name})")
     
     def check_win(self, row, col):
-        """Check if the last move at (row, col) resulted in a win"""
-        # Get the player who made the move
         player = self.board[row][col]
         
-        # Check 4 directions: horizontal, vertical, diagonal, anti-diagonal
         directions = [(1, 0), (0, 1), (1, 1), (1, -1)]
         
         for dx, dy in directions:
-            count = 1  # Start with 1 for the current piece
-            
-            # Check in both positive and negative directions
+            count = 1  
             for direction in [1, -1]:
                 nx, ny = row, col
                 
-                # Keep checking in this direction as long as we find matching pieces
                 while True:
                     nx += direction * dx
                     ny += direction * dy
                     
-                    # Check bounds and if piece matches
                     if (0 <= nx < self.board_size and 
                         0 <= ny < self.board_size and 
                         self.board[nx][ny] == player):
@@ -162,9 +139,7 @@ class BaseGameMode:
                     else:
                         break
             
-            # If we found 5 or more in a row, it's a win
             if count >= 5:
-                # Highlight the winning line
                 self.highlight_winning_line(row, col, dx, dy)
                 return True
                 
@@ -173,9 +148,8 @@ class BaseGameMode:
     def highlight_winning_line(self, row, col, dx, dy):
         """Highlight the winning line on the board"""
         player = self.board[row][col]
-        positions = [(row, col)]  # Start with the last move
+        positions = [(row, col)]  
         
-        # Find all positions in the winning line
         for direction in [1, -1]:
             nx, ny = row, col
             while True:
@@ -188,7 +162,6 @@ class BaseGameMode:
                 else:
                     break
         
-        # Highlight each position
         highlight_color = "green"
         for r, c in positions:
             x0 = c * self.cell_size
@@ -213,7 +186,7 @@ class BaseGameMode:
         """Log the move to a JSON Line file for AI training"""
         try:
             data = {
-                "board": [row[:] for row in self.board],  # Create a deep copy
+                "board": [row[:] for row in self.board],  
                 "move": [row, col],
                 "player": player
             }

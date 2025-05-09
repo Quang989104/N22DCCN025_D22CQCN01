@@ -4,9 +4,8 @@ from tkinter import messagebox
 import two_player_game
 
 def play_with_friend(root):
-    root.withdraw()  # Ẩn cửa sổ menu
-    two_player_game.start_game()  # Mở cửa sổ game caro
-    #root.deiconify()  # Hiện lại menu sau khi chơi
+    root.withdraw() 
+    two_player_game.start_game()  
 
 def exit_game(root):
     root.destroy()

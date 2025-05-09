@@ -21,7 +21,6 @@ class CaroGame:
     def build_gui(self):
         self.root.title("Cờ Caro")
 
-    # Xây dựng bảng Caro
         for i in range(self.size):
             row = []
             for j in range(self.size):
@@ -31,11 +30,9 @@ class CaroGame:
                 row.append(btn)
             self.buttons.append(row)
 
-    # Thêm nút Reset ở góc dưới trái
         self.reset_button = tk.Button(self.root, text="Reset", font=('Arial', 14), command=self.reset_game)
         self.reset_button.grid(row=self.size, column=1, columnspan=2, sticky='w')
 
-    # Thêm nút Home ở góc dưới phải
         self.home_button = tk.Button(self.root, text="Home", font=('Arial', 14), command=self.go_home)
         self.home_button.grid(row=self.size, column=self.size//2, columnspan=self.size//2, sticky='e')
 
@@ -96,35 +93,29 @@ class CaroGame:
         return any(count(dx, dy) >= 5 for dx, dy in directions)
 
     def reset_game(self):
-        # Reset lại trò chơi
         self.turn = 0
         self.board = [['' for _ in range(self.size)] for _ in range(self.size)]
         for i in range(self.size):
             for j in range(self.size):
                 self.buttons[i][j].config(text='', state='normal')
 
-    def go_home(self):                      # Đóng pygame
-        subprocess.Popen([sys.executable, "MAIN.py"])  # Chạy file caroAi.py
+    def go_home(self):                      
+        subprocess.Popen([sys.executable, "MAIN.py"]) 
         sys.exit()
 
-# Khởi tạo cửa sổ ứng dụng
 root = tk.Tk()
 game = CaroGame(root)
 root.update_idletasks()
 
-# Lấy kích thước thật sự sau khi GUI đã dựng xong
 window_width = root.winfo_width()
 window_height = root.winfo_height()
 
-# Lấy kích thước màn hình
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
-# Tính toán vị trí căn giữa
 x = (screen_width - window_width) // 2
 y = (screen_height - window_height) // 2
 
-# Đặt lại vị trí cửa sổ (không set lại width, height nữa)
 root.geometry(f"+{x}+{y}")
 
 root.mainloop()

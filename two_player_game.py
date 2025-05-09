@@ -9,7 +9,6 @@ CELL_SIZE = 35
 
 def start_game():
     window = tk.Toplevel()
-        # Căn giữa cửa sổ
     window_width = BOARD_SIZE * CELL_SIZE + 100
     window_height = BOARD_SIZE * CELL_SIZE + 150
     screen_width = window.winfo_screenwidth()
@@ -26,7 +25,6 @@ def start_game():
     from PIL import Image
     import os
 
-    # Đường dẫn ảnh
     image_path = os.path.join(os.path.dirname(__file__), "images")
 
     x_image = Image.open(os.path.join(image_path, "x.png")).resize((24, 20))
@@ -106,7 +104,7 @@ def start_game():
         move_stack.clear()
         current_player[0] = "X"
 
-    def go_home():                        # Đóng pygame
+    def go_home():                       
         subprocess.Popen([sys.executable, "MAIN.py"]) 
         sys.exit() 
 
@@ -114,7 +112,6 @@ def start_game():
         if messagebox.askokcancel("Thoát", "Bạn có muốn thoát không?"):
             window.destroy()
 
-    # Đảm bảo khi người dùng nhấn nút X để đóng cửa sổ, hàm on_close sẽ được gọi
     window.protocol("WM_DELETE_WINDOW", on_close)
 
     tk.Label(window, text="🧩 Cờ Caro - Người với Người 🧩", font=("Comic Sans MS", 20, "bold"),
