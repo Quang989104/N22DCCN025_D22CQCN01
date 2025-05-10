@@ -57,21 +57,16 @@ class Button:
         if event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos):
             self.callback()
 
-def draw_board(last_move=None):
+def draw_board():
     screen.fill((10, 10, 20))
-
     for x in range(BOARD_SIZE + 1):
         pygame.draw.line(screen, (50, 50, 60), (x * CELL_SIZE, 0), (x * CELL_SIZE, BOARD_SIZE * CELL_SIZE))
     for y in range(BOARD_SIZE + 1):
         pygame.draw.line(screen, (50, 50, 60), (0, y * CELL_SIZE), (BOARD_SIZE * CELL_SIZE, y * CELL_SIZE))
-
     for y in range(BOARD_SIZE):
         for x in range(BOARD_SIZE):
             cell_value = board[y][x]
             center = (x * CELL_SIZE + CELL_SIZE // 2, y * CELL_SIZE + CELL_SIZE // 2)
-            if (y, x) == last_move:
-                pygame.draw.rect(screen, (255, 100, 150), (x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE), 4)
-
             if cell_value == PLAYER:  # O
                 pygame.draw.circle(screen, (0, 255, 255), center, CELL_SIZE // 2 - 8, 4)
             elif cell_value == AI:  # X
@@ -129,6 +124,7 @@ def minimax(depth, alpha, beta, maximizing, start_time):
             if beta <= alpha:
                 break
         return max_eval, best_move
+    
     else:  
         min_eval = math.inf
         for r, c in moves:
@@ -241,8 +237,6 @@ def hide_message():
 
 def ai_move():
     global current_turn, game_over, winner, ai_cancelled
-
-    ai_cancelled = False  
 
     if game_over:
         return

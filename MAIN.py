@@ -3,8 +3,6 @@ import sys
 import subprocess
 import random
 import tkinter as tk
-from ui_utils import draw_gradient, create_button
-from game_actions import play_with_friend, exit_game, toggle_ai_levels, start_ai_game
 
 
 
