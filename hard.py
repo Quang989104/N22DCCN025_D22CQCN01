@@ -24,7 +24,7 @@ icon = pygame.image.load("images/image.png")
 pygame.display.set_icon(icon)
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Caro AI")
+pygame.display.set_caption("Game Caro - Hard Mode")
 font = pygame.font.SysFont(None, 40)
 
 board = [[EMPTY for _ in range(BOARD_SIZE)] for _ in range(BOARD_SIZE)]

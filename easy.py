@@ -19,7 +19,7 @@ class CaroGame:
         self.build_gui()
 
     def build_gui(self):
-        self.root.title("Cờ Caro")
+        self.root.title("Game Caro - Easy Mode")
 
         for i in range(self.size):
             row = []

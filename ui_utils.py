@@ -1,5 +1,6 @@
 import tkinter as tk
 
+# Hàm vẽ nền gradient
 def draw_gradient(canvas, root, color1, color2):
     steps = 100
     r1, g1, b1 = root.winfo_rgb(color1)
@@ -15,6 +16,7 @@ def draw_gradient(canvas, root, color1, color2):
         color = f'#{nr//256:02x}{ng//256:02x}{nb//256:02x}'
         canvas.create_rectangle(0, i*5, 600, (i+1)*5, outline="", fill=color)
 
+# Hàm tạo nút chung
 def create_button(root, text, y_pos, command):
     btn = tk.Button(root, text=text, font=("Helvetica", 16, "bold"),
                     bg="white", fg="#333", width=20, height=2, command=command,
