@@ -105,7 +105,6 @@ def minimax(depth, alpha, beta, maximizing, start_time):
     moves = sorted(get_candidate_moves(), key=lambda move: -score_position(move[0], move[1], AI))
 
     best_move = None
-
     if maximizing: 
         max_eval = -math.inf
         for r, c in moves:

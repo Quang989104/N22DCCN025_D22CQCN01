@@ -1,21 +1,15 @@
+
 import pygame
 import sys
 import subprocess
 import random
-import tkinter as tk
-
-
-
 pygame.init()
 
 icon = pygame.image.load("images/image.png")  
 pygame.display.set_icon(icon)
-
-
 WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("CARO")
-
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -23,7 +17,6 @@ LIGHT_BLUE = (200, 230, 255)
 BLUE = (70, 130, 180)
 DARK_RED = (178, 34, 34)
 HOVER_COLOR = (135, 206, 250)
-
 
 font = pygame.font.Font(None, 50)
 small_font = pygame.font.Font(None, 40)
@@ -65,56 +58,42 @@ MENU_MAIN = 0
 MENU_AI = 1
 current_menu = MENU_MAIN  
 
-
 def start_game_ai():
     global current_menu
     current_menu = MENU_AI  
-
 def start_game_human():
     pygame.quit()                        
     subprocess.Popen([sys.executable, "playerVsplayer.py"]) 
     sys.exit() 
-
 def quit_game():
     pygame.quit()
     sys.exit()
-
 def back_to_main():
     global current_menu
     current_menu = MENU_MAIN  
-
 def play_easy():
     pygame.quit()                         
     subprocess.Popen([sys.executable, "easy.py"])  
     sys.exit() 
-
 def play_medium():
     pygame.quit()                         
     subprocess.Popen([sys.executable, "medium.py"])  
     sys.exit()   
-
 def play_hard():
     subprocess.Popen([sys.executable, "hard.py"])
     pygame.quit()                           
     sys.exit()                            
-
-
-
 buttons_main = [
     Button(250, 180, 300, 70, "Play with AI", start_game_ai, BLUE, WHITE, BLUE),
     Button(250, 315, 300, 70, "Player vs Player", start_game_human, BLUE, WHITE, BLUE),
     Button(250, 450, 300, 70, "Exit game", quit_game, DARK_RED, WHITE, DARK_RED)
 ]
-
-
 buttons_ai = [
     Button(250, 180, 300, 70, "Easy", play_easy, BLUE, WHITE, BLUE),
     Button(250, 270, 300, 70, "Medium", play_medium, BLUE, WHITE, BLUE),
     Button(250, 360, 300, 70, "Hard", play_hard, BLUE, WHITE, BLUE),
     Button(250, 450, 300, 70, "Back", back_to_main, DARK_RED, WHITE, DARK_RED)
 ]
-
-
 class MovingText:
     def __init__(self):
         self.x = random.randint(0, WIDTH)
@@ -135,23 +114,14 @@ class MovingText:
     def draw(self, surface):
         draw_text(self.text, small_font, self.color, surface, self.x, self.y)
 
-
 moving_texts = [MovingText() for _ in range(10)]
-
-
 running = True
 while running:
     screen.fill(LIGHT_BLUE)
-
-    
     for moving_text in moving_texts:
         moving_text.move()
         moving_text.draw(screen)
-
-    
     draw_text("GAME CARO", font, BLACK, screen, WIDTH // 2, 70)
-
-    
     if current_menu == MENU_MAIN:
         for button in buttons_main:
             button.draw(screen)
@@ -159,8 +129,6 @@ while running:
         draw_text("Choose difficulty", font, BLACK, screen, WIDTH // 2, 130)
         for button in buttons_ai:
             button.draw(screen)
-
-    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -170,10 +138,6 @@ while running:
         elif current_menu == MENU_AI:
             for button in buttons_ai:
                 button.check_click(event)
-
     pygame.display.flip()
     pygame.time.delay(30)
-
-
-
 pygame.quit()
